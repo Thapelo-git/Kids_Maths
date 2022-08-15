@@ -1,6 +1,6 @@
 import React from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-
+//https://www.youtube.com/watch?v=6euUmHWOH9g
 const App = () => {
   const {
     transcript,
@@ -15,8 +15,8 @@ const App = () => {
 
   return (
     <div>
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
-      <button onClick={SpeechRecognition.startListening}>Start</button>
+      {/* <p>Microphone: {listening ? 'on' : 'off'}</p> */}
+      <button onClick={SpeechRecognition.startListening({ continuous: true,language:'en-sotho' })}>Start</button>
       <button onClick={SpeechRecognition.stopListening}>Stop</button>
       <button onClick={resetTranscript}>Reset</button>
       <p>{transcript}</p>
