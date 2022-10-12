@@ -1,10 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View ,Image} from 'react-native'
+import React,{useEffect} from 'react'
 
-const SplashScreen = () => {
+const SplashScreen = ({navigation}) => {
+  useEffect(() => {
+    setTimeout(()=>{
+      navigation.navigate('Welcome')
+    },2000)
+  },[])
   return (
     <View style={styles.container}>
-      <Text>SplashScreen</Text>
+     <Image style={styles.image} source={require('../Images/tutor3.png')}/>
+     <Text>Tutor</Text>
     </View>
   )
 }
@@ -17,5 +23,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+      },
+      image:{
+        height:150,
+        width:210,
+        
       },
 })

@@ -1,38 +1,28 @@
-import React,{useEffect, useState,Component} from 'react'
+import React,{useEffect, useState,} from 'react'
 import { StyleSheet, Text, View ,StatusBar,Alert,
     TextInput,TouchableOpacity,Image,Modal,Dimensions, SafeAreaView} from 'react-native'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Feather from "react-native-vector-icons/Feather"
-import Separator from './comp/Separator'
-import { Images,Colors  } from '../contants'
+
 import { useNavigation } from '@react-navigation/native'
 import { Formik } from 'formik'
 import * as yup from 'yup'
-import { Display } from '../utils'
-import forgetPassword from './forgetPassword'
-
+import {auth,db} from '../Screens/Firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import AsyncStorageLib from '@react-native-async-storage/async-storage'
-import { db,auth } from '../../../firebase' 
+
 const deviceHeight=Dimensions.get("window").height
 const deviceWidth=Dimensions.get("window").width
 const SignIn = ({props}) => {
     const navigation =useNavigation()
     const [Idnumber,setIdnumber]=useState([])
     const [isPasswordShow,setPasswordShow]=useState(false)
+    const ReviewSchem =yup.object({
+        email:yup.string().required().min(6),
+        password:yup.string().required().min(6),
+    })
     
-    useEffect(()=>{
-        db.ref('Puser').on('value',snap=>{
-            let item =[];
-            const a_=snap.val();
-            for(let x in a_){
-                item.push({IDnumber:a_[x].IDnumber,key:x
-                })
-            }
-            setIdnumber(item)
-        })
-    },[])
-    console.log(Idnumber,"no data ");
+  
     
     const signIn = async(data)=>{
         const { email, password ,idnumber} = data;
@@ -43,34 +33,28 @@ const SignIn = ({props}) => {
                     .then( async res => {
                         try {
                             const jsonValue = JSON.stringify(res.user)
-                            await AsyncStorageLib.setItem("Pfamily", res.user.uid)
+                            await AsyncStorageLib.setItem("TutorUsers", res.user.uid)
                           
         
-                            navigation.navigate('homeScreen')
+                            // navigation.navigate('HomeScreen')
                         } catch (e) {
                             console.log("no data ");
                         }
                     });
 
-                // ToastAndroid.show("Succussfully loged in ", ToastAndroid.SHORT)
-    
-             
-       
          
         } catch (error) {
             Alert.alert(error.name, error.message);
         }
     }
 
-    const ReviewSchem=yup.object({
-        
-        email:yup.string().email().required().min(6),
-        password:yup.string().required().min(6),
-    })
+   
   return (
-<SafeAreaView>
-
-            <View style={{width:deviceWidth *0.9,top:20}}>
+<SafeAreaView style={{backgroundColor:'#fff',width:'100%',height:'100%'}}>
+            <View style={{width:'100%',display:'flex',justifyContent:'flex-start',marginVertical:30}}>
+            <Image style={styles.image} source={require('../Images/tutor4.jpg')}/>
+            </View>
+            <View style={{width:'100%',padding:20,}}>
             
               <ScrollView>
                   <Formik
@@ -85,7 +69,7 @@ const SignIn = ({props}) => {
                          <>
         
        <View style={{height:15}}></View>
-               <Text style={{fontWeight:'bold'}}>Email Address</Text>
+             
        
         
             <View style={styles.inputContainer}>
@@ -106,7 +90,7 @@ const SignIn = ({props}) => {
             {props.errors.email? <Text style={{color:"red"}}>{props.errors.email}</Text>:null}
             <View style={{height:15}}></View>
             <View >
-            <Text style={{fontWeight:'bold'}}>Password</Text>
+            
         </View>
             
             <View style={styles.inputContainer}>
@@ -135,9 +119,9 @@ const SignIn = ({props}) => {
                 <View>
                     <Text style={styles.rememberMeText}></Text>
                 </View>
-                {/* <Text style={styles.forgotPasswordText}
-                onPress={()=>navigation.navigate('forgetPassword')}
-                >Forget Password</Text> */}
+                <Text style={styles.forgotPasswordText}
+                onPress={()=>navigation.navigate('ForgetPassword')}
+                >Forget Password</Text>
             </View>
     
             <TouchableOpacity style={styles.signinButton}
@@ -149,6 +133,12 @@ const SignIn = ({props}) => {
             </>
             )}
             </Formik>
+            <View style={{width:'100%',justifyContent:'center',flexDirection:'row',marginVertical:30}}>
+            <Text>Dont have account?</Text>
+            <TouchableOpacity onPress={()=>navigation.navigate('SignUp')}>
+                <Text style={{color:'blue',marginHorizontal:20}}>Sign Up</Text>
+            </TouchableOpacity>
+            </View>
             </ScrollView>
             </View>
             
@@ -166,6 +156,11 @@ const styles = StyleSheet.create({
         // backgroundColor:'#fff'
         
     },
+    image:{
+        height:80,
+        width:100,
+        
+      },
     headerContainer:{
        flexDirection:'row' ,
        alignItems:'center',
@@ -176,7 +171,7 @@ const styles = StyleSheet.create({
     headerTitle:{
       fontSize:20,
       lineHeight:20 * 1.4,
-      width:Display.setWidth(80),
+      width:80,
       textAlign:'center'  
 
     },
@@ -195,10 +190,9 @@ marginHorizontal:20
     },
     inputContainer:{
         backgroundColor:'#fff',
-        // paddingHorizontal:20,
-        // marginHorizontal:20,
-        borderRadius:8,
-        borderWidth:0.5,
+        
+       marginVertical:10,
+        borderWidth:1,
         borderColor:'#000',
         justifyContent:'center',
     },
@@ -210,8 +204,8 @@ marginHorizontal:20
         fontSize:18,
         textAlignVertical:'center',
         padding:0,
-        height:Display.setHeight(6),
-        color:Colors.DEFAULT_BLACK,
+        height:60,
+        color:"#000",
         flex:1
 
     },
@@ -231,14 +225,14 @@ marginHorizontal:20
     forgotPasswordText:{
         fontSize:12,
         lineHeight:12 * 1.4,
-        color:'#EC8F05',
+        color:'blue',
         fontWeight:'bold'
     },
     signinButton:{
         backgroundColor:'#000',
-        borderRadius:8,
+      
         marginHorizontal:20,
-        height:Display.setHeight(6),
+        height:60,
         justifyContent:'center',
         alignItems:'center',
         marginTop:20,
@@ -259,7 +253,7 @@ marginHorizontal:20
     accountText:{
         fontSize:13,
         lineHeight:13 * 1.4,
-        color:Colors.DEFAULT_BLACK
+        color:'#000'
     },
     signupText:{
         fontSize:13,
@@ -271,7 +265,7 @@ marginHorizontal:20
     orText:{
         fontSize:15,
         lineHeight:15 * 1.4,
-        color:Colors.DEFAULT_BLACK,
+        color:'#000',
         marginLeft:5,
         alignSelf:'center'
     },
