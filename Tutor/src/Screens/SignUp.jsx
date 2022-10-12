@@ -34,7 +34,7 @@ const SignUp = ({navigation}) => {
             phonenumber:phonenumber,
             uid:res.user.uid
           })
-        //   navigation.navigate('HomeScreen')
+          navigation.navigate('HomeScreen')
         //   res.user.sendEmailVerification()
           })
         }

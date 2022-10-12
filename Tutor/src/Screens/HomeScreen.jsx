@@ -6,12 +6,13 @@ import {
 import {Picker} from '@react-native-picker/picker';
 import { ScrollView } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import Feather from 'react-native-vector-icons/Feather'
 import { Divider } from 'react-native-paper';
-import { auth,db } from '../Tutor/src/Screens/Firebase';
-import ModelSearch from '../Tutor/src/Screens/ModelSearch';
+import { auth,db } from './Firebase';
+import ModelSearch from './ModelSearch';
 const { width } = Dimensions.get("screen")
 const cardWidth = width / 1.8
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     const [ComName, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phonenumber, setPhonenumber] = useState('')
@@ -46,7 +47,7 @@ const HomeScreen = () => {
         })
         db.ref('/TutorUsers/' + user).on('value', snap => {
 
-            setName(snap.val() && snap.val().name);
+            setName(snap.val() && snap.val().fullname);
             setPhonenumber(snap.val().phonenumber)
             setEmail(snap.val().email)
             
@@ -185,16 +186,18 @@ const HomeScreen = () => {
         backgroundColor="#EC8F05"
         barStyle="light-content"
     />
-    <View style={styles.headerContainer}
+    {/* <View style={styles.headerContainer}
     >
 
         <Text style={styles.headerTitle}>{ComName} company</Text>
-    </View>
+    </View> */}
     <View style={styles.header}>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => navigation.navigate('EditProfile', {
-                email: email, name: ComName, phonenumber: phonenumber
-            })}>
+            <TouchableOpacity
+            //  onPress={() => navigation.navigate('EditProfile', {
+            //     email: email, name: ComName, phonenumber: phonenumber
+            // })}
+            >
                 <Image source={{ uri: 'https://image.shutterstock.com/image-vector/male-avatar-profile-picture-use-600w-193292033.jpg' }}
                     style={{ height: 50, width: 50, borderRadius: 25 }} />
             </TouchableOpacity>
@@ -205,7 +208,7 @@ const HomeScreen = () => {
             <Text style={{
                 fontSize: 18, marginLeft: 10,
                 marginTop: 18
-            }}>{email}</Text>
+            }}>{ComName}</Text>
         </View>
         {/* <TouchableOpacity onPress={navigation.navigate('Notification')}>
   <Ionicons name="notifications" size={24}/>
@@ -224,7 +227,7 @@ const HomeScreen = () => {
 
             <View
                 style={{ fontSize: 18, flex: 1, marginLeft: 10 }}
-            ><Text>Search by Faculty</Text></View>
+            ><Text>Search by City</Text></View>
 
 
         </TouchableOpacity>
@@ -232,7 +235,7 @@ const HomeScreen = () => {
  
     <View style={{ paddingVertical: 20 }}>
 
-        <Text style={styles.titles}>Choose by University</Text>
+        <Text style={styles.titles}>Choose by Subject</Text>
 
         <Picker
             selectedValue={StudentContainer}
@@ -240,12 +243,12 @@ const HomeScreen = () => {
             onValueChange={(value, id) => { FilterFunction(value) }}
         >
             <Picker.Item label="select" value="" />
-            <Picker.Item label="TUT" value="TUT" />
-            <Picker.Item label="UL" value="UL" />
-            <Picker.Item label="UP" value="UP" />
-            <Picker.Item label="UJ" value="UJ" />
-            <Picker.Item label="Wits" value="Wits" />
-            <Picker.Item label="UNISA" value="UNISA" />
+            <Picker.Item label="Mathematics" value="Mathematics" />
+            <Picker.Item label="Physical Sciences" value="PS" />
+            <Picker.Item label="Life Sciences" value="LS" />
+            <Picker.Item label="Natural Sciences" value="NS" />
+            <Picker.Item label="History" value="History" />
+            <Picker.Item label="Geography" value="Geography" />
         </Picker>
         <FlatList
             keyExtractor={(_, key) => key.toString()}
@@ -256,7 +259,20 @@ const HomeScreen = () => {
             renderItem={({ item, index }) => <Card element={item} index={index} />}
         />
 
-
+<View style={{
+        marginTop: 20,
+        flexDirection: 'row',
+        paddingHorizontal: 20,
+    }}>
+        <TouchableOpacity style={styles.buttonContainer}
+            onPress={() => navigation.navigate('Profile')}>
+            
+            <View
+                style={{ fontSize: 18, flex: 1, marginLeft: 10 }} >
+                    <Text>Tell us more about your self</Text></View>
+                    <Feather name="arrow-right" size={24} />
+        </TouchableOpacity>
+    </View>
     </View>
     <ModelSearch bottomopen={bottomopen} navigation={navigation} />
 
@@ -267,96 +283,105 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
-  header: {
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-},
-inputContainer: {
-    flex: 1,
-    height: 50,
-    borderRadius: 10,
-    flexDirection: 'row',
-    backgroundColor: '#eee',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-},
-btnListContainer: {
-    marginLeft: -10,
+    header: {
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+    },
+    inputContainer: {
+        flex: 1,
+        height: 50,
+        borderRadius: 10,
+        flexDirection: 'row',
+        backgroundColor: '#eee',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    buttonContainer: {
+        flex: 1,
+        height: 50,
+        borderWidth:0.5,
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    btnListContainer: {
+        marginLeft: -10,
 
-    paddingHorizontal: 10,
-    paddingVertical: 30,
-    // alignItems:'center'
-},
-signinButton:{
-    backgroundColor:'#4bb543',
-    borderRadius:8,
-    marginHorizontal:20,
-    height:30,
-    justifyContent:'center',
-    alignItems:'center',
-    marginTop:20,
-},
-signinButtonText:{
-    fontSize:18,
-    lineHeight:18 * 1.4,
-    color:'#fff',
-    
-},
-categoryBtn: {
-    height: 45,
-    width: 80,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-    flexDirection: 'row',
+        paddingHorizontal: 10,
+        paddingVertical: 30,
+        // alignItems:'center'
+    },
+    signinButton:{
+        backgroundColor:'#4bb543',
+        borderRadius:8,
+        marginHorizontal:20,
+        height:30,
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:20,
+    },
+    signinButtonText:{
+        fontSize:18,
+        lineHeight:18 * 1.4,
+        color:'#fff',
+        
+    },
+    categoryBtn: {
+        height: 45,
+        width: 80,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 5,
+        flexDirection: 'row',
 
-},
-headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20
-},
-headerTitle: {
-    fontSize: 20,
-    lineHeight: 20 * 1.4,  
-    textAlign: 'center'
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 20,
+        paddingHorizontal: 20
+    },
+    headerTitle: {
+        fontSize: 20,
+        lineHeight: 20 * 1.4,  
+        textAlign: 'center'
 
-},
-card: {
-    height: 220,
-},
-cardContainer: {
-    height: 100,
-    width: cardWidth * 1.5,
-    marginRight: 20,
-    // marginBottom:20,
-    marginVertical: 10,
-    // marginTop:5,
-    borderRadius: 15,
-    elevation: 15,
-    backgroundColor: COLORS.white,
-    flexDirection: 'row', alignItems: 'center'
+    },
+    card: {
+        height: 220,
+    },
+    cardContainer: {
+        height: 100,
+        width: cardWidth * 1.5,
+        marginRight: 20,
+        // marginBottom:20,
+        marginVertical: 10,
+        // marginTop:5,
+        borderRadius: 15,
+        elevation: 15,
+        backgroundColor: '#fff',
+        flexDirection: 'row', alignItems: 'center'
 
-},
-discountcard: {
-    flexDirection: 'row', justifyContent: 'center',
-    width: '100%',
-    height: 110,
-  
-    alignItems: 'center',
-},
+    },
+    discountcard: {
+        flexDirection: 'row', justifyContent: 'center',
+        width: '100%',
+        height: 110,
+        
+        alignItems: 'center',
+    },
 
-cardImage: {
-    height: 100,
-    width: width / 3,
-    marginRight: 20,
-    padding: 10,
-    overflow: 'hidden',
-    borderRadius: 10,
-}
+    cardImage: {
+        height: 100,
+        width: width / 3,
+        marginRight: 20,
+        padding: 10,
+        overflow: 'hidden',
+        borderRadius: 10,
+    }
 })

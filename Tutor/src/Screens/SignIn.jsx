@@ -36,7 +36,7 @@ const SignIn = ({props}) => {
                             await AsyncStorageLib.setItem("TutorUsers", res.user.uid)
                           
         
-                            // navigation.navigate('HomeScreen')
+                            navigation.navigate('HomeScreen')
                         } catch (e) {
                             console.log("no data ");
                         }

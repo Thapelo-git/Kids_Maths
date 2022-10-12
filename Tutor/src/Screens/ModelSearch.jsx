@@ -2,15 +2,15 @@ import React,{useState,useEffect} from 'react'
 
 import { SafeAreaView, StyleSheet, Text, View,TextInput,FlatList 
     ,TouchableOpacity,Image,ScrollView,Animated,Dimensions} from 'react-native'
-// import { BottomSheet } from 'react-native-elements/dist/bottomSheet/BottomSheet.js'
 
-// import Ionicons from 'react-native-vector-icons/Ionicons'
-// import Feather from 'react-native-vector-icons/Feather'
-// const deviceHeight=Dimensions.get("window").height
-// const { width } = Dimensions.get("screen")
-// const cardWidth = width / 1.8
-// import { auth,db } from './Firebase.jsx'
-// import { Divider } from 'react-native-elements'
+    import BottomSheet from 'react-native-gesture-bottom-sheet'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import Feather from 'react-native-vector-icons/Feather'
+const deviceHeight=Dimensions.get("window").height
+const { width } = Dimensions.get("screen")
+const cardWidth = width / 1.8
+import { auth,db } from './Firebase.jsx'
+import { Divider } from 'react-native-elements'
 const ModelSearch = ({navigation,bottomopen}) => {
   const user = auth.currentUser.uid;
   const [name, setName] = useState('')
@@ -181,7 +181,7 @@ const ModelSearch = ({navigation,bottomopen}) => {
   }
     return (
         <SafeAreaView >
-          {/* <Animated.View>
+          <Animated.View>
           <BottomSheet
           hasDraggableIcon
           ref={bottomopen}
@@ -223,7 +223,7 @@ const ModelSearch = ({navigation,bottomopen}) => {
      
         
      </BottomSheet>
-   </Animated.View> */}
+   </Animated.View>
     
         </SafeAreaView>
     )
