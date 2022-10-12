@@ -248,7 +248,7 @@ const HomeScreen = ({navigation}) => {
             <Picker.Item label="Life Sciences" value="LS" />
             <Picker.Item label="Natural Sciences" value="NS" />
             <Picker.Item label="History" value="History" />
-            <Picker.Item label="Geography" value="Geography" />
+            <Picker.Item label="Other" value="Other" />
         </Picker>
         <FlatList
             keyExtractor={(_, key) => key.toString()}

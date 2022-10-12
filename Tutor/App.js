@@ -13,6 +13,7 @@ import ForgetPassword from './src/Screens/ForgetPassword';
 import HomeScreen from './src/Screens/HomeScreen';
 import TabScreen from './src/Screens/TabScreen';
 import Profile from './src/Screens/Profile';
+import TutorProfile from './src/Screens/TutorProfile';
 
 
 const Stack = createNativeStackNavigator()
@@ -39,6 +40,7 @@ export default function App() {
       <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
       <Stack.Screen name="HomeScreen" component={TabScreen} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="TutorProfile" component={TutorProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

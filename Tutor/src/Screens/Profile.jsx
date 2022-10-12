@@ -4,10 +4,12 @@ import {
     SafeAreaView, StyleSheet, Text, View, Image, TextInput, TouchableOpacity,
     FlatList, Dimensions, StatusBar,  
 } from 'react-native' 
+import { Card } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather'
 import { auth,db } from './Firebase'
 
-const Profile = () => {
+const Profile = ({navigation}) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phonenumber, setPhonenumber] = useState('')
@@ -23,6 +25,11 @@ const Profile = () => {
         })
 
     }, [])
+    const onSignout =()=>{
+        auth
+        .signOut()
+        
+    }
   return (
     <View style={styles.container}>
         
@@ -34,12 +41,28 @@ const Profile = () => {
     <Feather name="arrow-right" size={24} />
     </TouchableOpacity >
 
-    <TouchableOpacity style={{borderWidth:2,
+    <TouchableOpacity onPress={()=>navigation.navigate('TutorProfile',{
+                   email:email,name:name,phonenumber:phonenumber,uid:Uid
+             })}
+    style={{borderWidth:2,
         backgroundColor:'#fff',marginVertical:30, borderColor:'#000',width:200,height:70,
-        justifyContent:'center',alignItems:'center',flexDirection:'row'}} onPress={()=>navigation.navigate('SignUp')}>
+        justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
     <Text style={{color:'#000'}}>Tutor</Text> 
     <Feather name="arrow-right" size={24} />  
     </TouchableOpacity>
+    <TouchableOpacity onPress={onSignout} style={{backgroundColor:'red', width:140, marginTop: 50, borderRadius:5, padding:5}}>
+
+<View style={{flexDirection: 'row', justifyContent:'center'}}>
+<Icon
+    name='ios-log-out'
+    type='Ionicon'
+    color='#fff'
+    size={25}/>
+    <Text style={{padding: 5, paddingTop: -15, fontSize: 18, color: '#fff'}}>
+        Log-out
+    </Text>
+</View>
+</TouchableOpacity>
      </View>
     </View>
   )
