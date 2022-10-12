@@ -22,26 +22,37 @@ const ModelSearch = ({navigation,bottomopen}) => {
   const [Student, setStudent] = useState([])
 
   useEffect(() => {
-    db.ref('/Student').on('value',snap=>{
+    db.ref('/TutorUsers').on('value',snap=>{
           
         const Student=[]
            snap.forEach(action=>{
                const key=action.key
                const data =action.val()
                Student.push({
-                   key:key,
-                   name: data.name,surname: data.surname,IDnumber: data.IDnumber,
-                   UniversityName:data.UniversityName,
-                   monthNum:data.monthNum,faculty:data.faculty,Status:data.Status,
+                key: key,
+                Avalability: data.Avalability,
+                fullname: data.fullname,location:data.location,
+                Description: data.Description, Gender: data.Gender,
+                Email: data.email, faculty: data.faculty,StartDate:data.StartDate,
+                Subject: data.Subject,Price:data.Price
   
                    
                })
     
            })
-          
-               setStudent(Student)
-               setFilteredDataSource(Student);
-               setMasterDataSource(Student);
+           const text='Available'
+                if(text){
+                 const newData = Student.filter(function(item){
+                     const itemData = item.Description ? item.Description
+                     :'';
+                     const textData = text;
+                     return itemData.indexOf( textData)>-1;
+     
+                 })
+                 setStudent(newData)
+                 setFilteredDataSource(newData);
+                 setMasterDataSource(newData);
+               }
        })
      
 
@@ -57,7 +68,7 @@ const ModelSearch = ({navigation,bottomopen}) => {
     const searchFilterFunction = (text) => {
       if (text) {
           const newData = masterDataSource.filter(function (item) {
-              const itemData = item.faculty? item.faculty.toUpperCase()
+              const itemData = item.location? item.location.toUpperCase()
                   : ''.toUpperCase();
               const textData = text.toUpperCase();
               return itemData.indexOf(textData) > -1;
@@ -95,10 +106,10 @@ const ModelSearch = ({navigation,bottomopen}) => {
                    <View style={{ backgroundColor: 'gray', justifyContent: 'flex-start', flexDirection: 'row', padding: 8, alignItems:'center', borderBottomRightRadius:10}}>
                     
                      <Text style={{color: '#fff'}}>
-                       Student Number:
+                       Location:
                      </Text>
                      <Text style={{color: '#fff'}}>
-                       {" "}{element.IDnumber}
+                       {" "}{element.location}
                      </Text>
                    </View>
                  </View>

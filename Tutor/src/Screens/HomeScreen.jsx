@@ -22,7 +22,7 @@ const HomeScreen = ({navigation}) => {
 
     const user = auth.currentUser.uid;
     useEffect(() => {
-        db.ref('/Student').on('value', snap => {
+        db.ref('/TutorUsers').on('value', snap => {
 
             const Student = []
             snap.forEach(action => {
@@ -30,16 +30,26 @@ const HomeScreen = ({navigation}) => {
                 const data = action.val()
                 Student.push({
                     key: key,
-                    IDnumber: data.IDnumber,
-                    name: data.name,
-                    surname: data.surname, UniversityName: data.UniversityName,
-                    completed: data.completed, faculty: data.faculty,Status:data.Status,
-                    monthNum: data.monthNum
+                    Avalability: data.Avalability,
+                    fullname: data.fullname,location:data.location,
+                    Description: data.Description, Gender: data.Gender,
+                    Email: data.email, faculty: data.faculty,StartDate:data.StartDate,
+                    Subject: data.Subject,Price:data.Price
                 })
-               
-                 setStudent(Student)
-                 setFilteredDataSource(Student);
-                 setMasterDataSource(Student);
+                const text='Available'
+                if(text){
+                 const newData = Student.filter(function(item){
+                     const itemData = item.Description ? item.Description
+                     :'';
+                     const textData = text;
+                     return itemData.indexOf( textData)>-1;
+     
+                 })
+                 setStudent(newData)
+                 setFilteredDataSource(newData);
+                 setMasterDataSource(newData);
+               }
+                 
                
                
 
@@ -61,7 +71,7 @@ const HomeScreen = ({navigation}) => {
     const FilterFunction = (text) => {
         if (text) {
             const newData = masterDataSource.filter(function (item) {
-                const itemData = item.UniversityName ? item.UniversityName.toUpperCase()
+                const itemData = item.Subject ? item.Subject.toUpperCase()
                     : ''.toUpperCase();
                 const textData = text.toUpperCase();
                 return itemData.indexOf(textData) > -1;
@@ -96,10 +106,10 @@ const HomeScreen = ({navigation}) => {
                       <View style={{ backgroundColor: 'gray', justifyContent: 'flex-start', flexDirection: 'row', padding: 8, alignItems:'center', borderBottomRightRadius:10}}>
                        
                         <Text style={{color: '#fff'}}>
-                          Student Number:
+                          Location
                         </Text>
                         <Text style={{color: '#fff'}}>
-                          {" "}{element.IDnumber}
+                          {" "}{element.location}
                         </Text>
                       </View>
                     </View>

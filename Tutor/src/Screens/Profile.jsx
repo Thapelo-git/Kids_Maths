@@ -26,9 +26,9 @@ const Profile = ({navigation}) => {
 
     }, [])
     const onSignout =()=>{
-        auth
-        .signOut()
-        
+        // auth
+        // .signOut()
+        navigation.navigate('SignIn')
     }
   return (
     <View style={styles.container}>
