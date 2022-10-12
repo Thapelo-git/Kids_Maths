@@ -4,6 +4,8 @@ import { StyleSheet, Text, View ,StatusBar,SafeAreaView,TextInput,Image,
 import Feather from 'react-native-vector-icons/Feather'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import {Picker} from '@react-native-picker/picker';
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
@@ -18,7 +20,8 @@ const TutorProfile = ({navigation,route}) => {
         name:yup.string().required().min(2),
         phonenumber:yup.string().required().matches(phoneRegExp,'Phone number is not valid'),
         email:yup.string().required().min(6),
- 
+        location:yup.string().required().min(6),
+        Gender:yup.string()
     })
     const editprofile=()=>{
   
@@ -32,7 +35,7 @@ const TutorProfile = ({navigation,route}) => {
       }
   return (
     <Formik
-    initialValues={{name:'',phonenumber:'',email:'',password:'',confirmpassword:'',Duties:'',
+    initialValues={{name:'',phonenumber:'',email:'',Gender:'Male',
     location:'',contactPerson:''}}
     validationSchema={ReviewSchem}
     onSubmit={(values,action)=>{
@@ -47,7 +50,7 @@ const TutorProfile = ({navigation,route}) => {
         alignItems: 'center',
         justifyContent: 'center',width:'100%'}}>
     <ProgressSteps>
-        <ProgressStep label="First Step">
+        <ProgressStep label="About">
             <View style={{ alignItems: 'center' }}>
             <View style={styles.inputContainer}>
                 <View style={styles.inputSubContainer}>
@@ -100,9 +103,38 @@ const TutorProfile = ({navigation,route}) => {
                 </View>
             </View>
             <Text style={{color:'red',marginTop:-15}}>{props.touched.phonenumber && props.errors.phonenumber}</Text>
+            <Text style={{marginVertical:10}}>Gender</Text>
+
+<Picker
+    selectedValue={props.values.Gender}
+    style={{ width: 300, height: 50, backgroundColor: '#eee' }}
+    onValueChange={props.handleChange('Gender')}   
+             onBlur={props.handleBlur('Gender')}
+>
+    <Picker.Item label="Male" value="Male" />
+    <Picker.Item label="Female" value="Female" />
+</Picker>
+<Text style={{marginVertical:10}}>Enter your city</Text>
+<View style={styles.inputContainer}>
+                <View style={styles.inputSubContainer}>
+                    <Ionicons name="location" size={22}
+                    color='#000'
+                    style={{marginRight:10}}/>
+                    
+                    <TextInput placeholder="City"
+                    selectionColor='gainsboro'
+                    style={styles.inputText}
+                    keyboardType='numeric'
+                    onChangeText={props.handleChange('location')}
+             value={props.values.location}
+             onBlur={props.handleBlur('location')}
+                    />
+                </View>
+            </View>
+            <Text style={{color:'red',marginTop:-15}}>{props.touched.location && props.errors.location}</Text>
             </View>
         </ProgressStep>
-        <ProgressStep label="Second Step">
+        <ProgressStep label="Tutoring Details">
             <View style={{ alignItems: 'center' }}>
                 <Text>This is the content within step 2!</Text>
             </View>
