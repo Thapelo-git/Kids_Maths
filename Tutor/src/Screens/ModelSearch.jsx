@@ -13,9 +13,9 @@ import { auth,db } from './Firebase.jsx'
 import { Divider } from 'react-native-elements'
 const ModelSearch = ({navigation,bottomopen}) => {
   const user = auth.currentUser.uid;
-  const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [phonenumber, setPhonenumber] = useState('')
+  const [fullame, setName] = useState('')
+    const [Email, setEmail] = useState('')
+    const [PhoneNum, setPhonenumber] = useState('')
     const [searchtext,setSearchtext] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -56,12 +56,13 @@ const ModelSearch = ({navigation,bottomopen}) => {
        })
      
 
-    //   db.ref('/users/' + user).on('value', snap => {
+       db.ref('/TutorUsers/' + user).on('value', snap => {
 
-    //     setName(snap.val() && snap.val().name);
-    //     setPhonenumber(snap.val().phonenumber)
-    //     setEmail(snap.val().email)
-    // })
+        setName(snap.val() && snap.val().fullname);
+        setPhonenumber(snap.val().phonenumber)
+        setEmail(snap.val().email)
+        
+    })
 
   }, [])
 
@@ -81,115 +82,108 @@ const ModelSearch = ({navigation,bottomopen}) => {
           setSearchtext(text)
       }
   }
-  const updateAccept = (key,status,IDnumber,faculty,monthNum,UniversityName,name,surname) => {
-    db.ref('Student').child(key).update({Status:status})
-    .then(()=>db.ref('Student').once('value'))
-    .then(snapshot=>snapshot.val())
-    .catch(error => ({
-      errorCode: error.code,
-      errorMessage: error.message
-    }))
-    db.ref('AcceptedStudents').push({
-        Status:'Accepted',
-       IDnumber,faculty,monthNum,UniversityName,
-       surname,name,user,ComName,email,phonenumber,
-        Duties,location
+  const updateAccept = (key,Avalability,Gender,Price,StartDate,Subject,name,location,email) => {
+     
+    db.ref('RequestTutor').push({
+        Status:'Pending',fullame,Email,PhoneNum,
+        key,Avalability,Gender,Price,StartDate,Subject,
+        name,location,email,
       })
 
 }
 
-    const Card = ({element, index }) => {
-      return (
-        <>
-        <View style={{ margin: 20,backgroundColor: '#fff',elevation: 3 }}>
-        <View style={{width:'100%'}}>
-                   <View style={{ backgroundColor: 'gray', justifyContent: 'flex-start', flexDirection: 'row', padding: 8, alignItems:'center', borderBottomRightRadius:10}}>
-                    
-                     <Text style={{color: '#fff'}}>
-                       Location:
-                     </Text>
-                     <Text style={{color: '#fff'}}>
-                       {" "}{element.location}
-                     </Text>
-                   </View>
-                 </View>
-
-                 <Divider style={{width: 90, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
-
-                 {/* event type */}
-                 <View style={{flexDirection:'row',}}>
-                 <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8, alignItems:'center'}}>
-                   <Ionicons name="documents" color='#333' size={20} />
-                   <Text style={{paddingHorizontal: 5,color:'#333'}}>
-                    faculty of : {element.faculty} 
-                   </Text>
-                 </View>
-                 <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8, alignItems:'center'}}>
+const Card = ({ element, index }) => {
+  return (
+     <>
+     <View style={{ margin: 20,backgroundColor: '#fff',elevation: 3 }}>
+     <View style={{width:'100%'}}>
+                <View style={{ backgroundColor: 'gray', justifyContent: 'flex-start', flexDirection: 'row', padding: 8, alignItems:'center', borderBottomRightRadius:10}}>
                  
-                   <Text style={{paddingHorizontal: 5,color:'#333'}}>
-                    Duration : {element.monthNum}  month
-                   </Text>
-                 </View>
-                 </View>
-                 <Divider style={{width: 120, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
+                  <Text style={{color: '#fff'}}>
+                    Location
+                  </Text>
+                  <Text style={{color: '#fff'}}>
+                    {" "}{element.location}
+                  </Text>
+                </View>
+              </View>
 
-                 {/* date */}
-                 <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8, alignItems:'center' }}>
-                   {/* <Feather
-                     name="calendar" size={20}
-                     style={{ paddingHorizontal: 5 }}
-                     color='blue'
-                   /> */}
-                   <Text>University Name:</Text>
-                   <Text style={{color:'blue', fontSize:12}}>
-                     {element.UniversityName} 
-                   </Text>
-                 </View>
+              <Divider style={{width: 90, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
 
-                 <Divider style={{width: 170, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
-
-               {/* location */}
-               <View style={{flexDirection:'row'}}>
-               <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
-                 <View>
-                 <Text>Name: </Text>
-                 <Text style={{color:'#333'}}>
-                   {element.name}
-                 </Text>
-                 </View>
-                 <View>
-                 <Text>Surname: </Text>
-                 <Text style={{color:'#333'}}>
-                   {element.surname}
-                 </Text>
-                 </View>
-               </View>
-               <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
-                 <View>
-                 <Text>modules Completed: </Text>
-                 <Text style={{color:'#333'}}>
-                   {element.completed}
-                 </Text>
-                 </View>
+              {/* event type */}
+              <View style={{flexDirection:'row',}}>
+              <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8, alignItems:'center'}}>
+                {/* <Ionicons name="documents" color='#333' size={20} /> */}
+                <Text style={{paddingHorizontal: 5,color:'#333'}}>
                  
-               </View>
-               </View>
-               <Divider style={{width: 200, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
+                </Text>
+              </View>
+              <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8, alignItems:'center'}}>
+              
+                <Text style={{paddingHorizontal: 5,color:'#333'}}>
+                 {element.Avalability}  Tutor
+                </Text>
+              </View>
+              </View>
+              <Divider style={{width: 120, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
 
-               {/* description */}
-               <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
-               <TouchableOpacity style={styles.signinButton}
-              onPress={()=>updateAccept(element.key,'Accepted',element.IDnumber,
-              element.faculty,element.monthNum,element.UniversityName,element.name,
-              element.surname)} >
-                <Text style={styles.signinButtonText}
-                
-                >Accept</Text>
-            </TouchableOpacity>
-               </View>
-               </View>
-        </>)
-  }
+              {/* date */}
+              <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8, alignItems:'center' }}>
+                {/* <Feather
+                  name="calendar" size={20}
+                  style={{ paddingHorizontal: 5 }}
+                  color='blue'
+                /> */}
+                <Text>R:</Text>
+                <Text style={{color:'blue', fontSize:12}}>
+                  {element.Price} per {element.StartDate}
+                </Text>
+              </View>
+
+              <Divider style={{width: 170, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
+
+            {/* location */}
+            <View style={{flexDirection:'row'}}>
+            <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
+              <View>
+              <Text>Name: </Text>
+              <Text style={{color:'#333'}}>
+                {element.fullname}
+              </Text>
+              </View>
+              <View>
+              <Text>Gender: </Text>
+              <Text style={{color:'#333'}}>
+                {element.Gender}
+              </Text>
+              </View>
+            </View>
+            <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
+              <View>
+              <Text>Specialist of: </Text>
+              <Text style={{color:'#333'}}>
+                {element.Subject}
+              </Text>
+              </View>
+              
+            </View>
+            </View>
+            <Divider style={{width: 200, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
+
+            {/* description */}
+            <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
+            <TouchableOpacity style={styles.signinButton}
+        onPress={()=>updateAccept(element.key,'Accepted',element.Avalability,
+        element.Gender,element.Price,element.StartDate,element.name,
+        element.location,element.email)} >
+          <Text style={styles.signinButtonText}
+          
+          >Request</Text>
+      </TouchableOpacity>
+            </View>
+            </View>
+     </>)
+}
     return (
         <SafeAreaView >
           <Animated.View>
@@ -218,7 +212,7 @@ const ModelSearch = ({navigation,bottomopen}) => {
                     <TextInput
                         style={{ fontSize: 18, flex: 1, marginLeft: 10 }}
                         
-                        placeholder="Where to go ?"
+                        placeholder="Search by City"
                         onChangeText={(text) => searchFilterFunction(text)} />
                   
                 </View>
@@ -273,20 +267,20 @@ const styles = StyleSheet.create({
         // marginTop:20,
     },
     signinButton:{
-        backgroundColor:'#4bb543',
-        borderRadius:8,
-        marginHorizontal:20,
-        height:30,
-        justifyContent:'center',
-        alignItems:'center',
-        marginTop:20,
-    },
-    signinButtonText:{
-        fontSize:18,
-        lineHeight:18 * 1.4,
-        color:'#fff',
-        
-    },
+      backgroundColor:'#fff',
+      borderWidth:1,
+      marginHorizontal:20,
+      height:40,
+      justifyContent:'center',
+      alignItems:'center',
+      marginTop:20,
+  },
+  signinButtonText:{
+      fontSize:18,
+      lineHeight:18 * 1.4,
+      color:'#000',
+      
+  },
     card: {
       height: 220,
   },

@@ -6,6 +6,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import HomeScreen from './HomeScreen';
 import Profile from './Profile';
+import ResultsScreen from './ResultsScreen';
 const Tab = createMaterialBottomTabNavigator()
 const TabScreen = () => {
     return (
@@ -28,18 +29,18 @@ const TabScreen = () => {
           ),
         }}
       />
-{/*      
+     
       <Tab.Screen
-        name="Logbook"
-        component={Logbook}
+        name="Results"
+        component={ResultsScreen}
         options={{
-          tabBarLabel: 'Logbook',
+          tabBarLabel: 'Results',
           tabBarIcon: ({ color }) => (
             <Ionicons name="documents" color={color} size={24} />
           
           ),
         }}
-      />*/}
+      />
       <Tab.Screen
         name="Profile"
         component={Profile}

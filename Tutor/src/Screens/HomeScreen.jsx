@@ -13,9 +13,9 @@ import ModelSearch from './ModelSearch';
 const { width } = Dimensions.get("screen")
 const cardWidth = width / 1.8
 const HomeScreen = ({navigation}) => {
-    const [ComName, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [phonenumber, setPhonenumber] = useState('')
+    const [fullame, setName] = useState('')
+    const [Email, setEmail] = useState('')
+    const [PhoneNum, setPhonenumber] = useState('')
     const [filteredDataSource, setFilteredDataSource] = useState();
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [Student, setStudent] = useState([])
@@ -81,19 +81,12 @@ const HomeScreen = ({navigation}) => {
             setStudentContainer(text)
         }
     }
-    const updateAccept = (key,status,IDnumber,faculty,monthNum,UniversityName,name,surname) => {
-        db.ref('Student').child(key).update({Status:status})
-        .then(()=>db.ref('Student').once('value'))
-        .then(snapshot=>snapshot.val())
-        .catch(error => ({
-          errorCode: error.code,
-          errorMessage: error.message
-        }))
-        db.ref('AcceptedStudents').push({
-            Status:'Accepted',
-           IDnumber,faculty,monthNum,UniversityName,
-           surname,name,user,ComName,email,phonenumber,
-            Duties,location
+    const updateAccept = (key,Avalability,Gender,Price,StartDate,Subject,name,location,email) => {
+     
+        db.ref('RequestTutor').push({
+            Status:'Pending',fullame,Email,PhoneNum,
+            key,Avalability,Gender,Price,StartDate,Subject,
+            name,location,email,
           })
   
     }
@@ -119,15 +112,15 @@ const HomeScreen = ({navigation}) => {
                     {/* event type */}
                     <View style={{flexDirection:'row',}}>
                     <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8, alignItems:'center'}}>
-                      <Ionicons name="documents" color='#333' size={20} />
+                      {/* <Ionicons name="documents" color='#333' size={20} /> */}
                       <Text style={{paddingHorizontal: 5,color:'#333'}}>
-                       faculty of : {element.faculty} 
+                       
                       </Text>
                     </View>
                     <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8, alignItems:'center'}}>
                     
                       <Text style={{paddingHorizontal: 5,color:'#333'}}>
-                       Duration : {element.monthNum}  month
+                       {element.Avalability}  Tutor
                       </Text>
                     </View>
                     </View>
@@ -140,9 +133,9 @@ const HomeScreen = ({navigation}) => {
                         style={{ paddingHorizontal: 5 }}
                         color='blue'
                       /> */}
-                      <Text>University Name:</Text>
+                      <Text>R:</Text>
                       <Text style={{color:'blue', fontSize:12}}>
-                        {element.UniversityName} 
+                        {element.Price} per {element.StartDate}
                       </Text>
                     </View>
 
@@ -154,21 +147,21 @@ const HomeScreen = ({navigation}) => {
                     <View>
                     <Text>Name: </Text>
                     <Text style={{color:'#333'}}>
-                      {element.name}
+                      {element.fullname}
                     </Text>
                     </View>
                     <View>
-                    <Text>Surname: </Text>
+                    <Text>Gender: </Text>
                     <Text style={{color:'#333'}}>
-                      {element.surname}
+                      {element.Gender}
                     </Text>
                     </View>
                   </View>
                   <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
                     <View>
-                    <Text>modules Completed: </Text>
+                    <Text>Specialist of: </Text>
                     <Text style={{color:'#333'}}>
-                      {element.completed}
+                      {element.Subject}
                     </Text>
                     </View>
                     
@@ -179,12 +172,12 @@ const HomeScreen = ({navigation}) => {
                   {/* description */}
                   <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
                   <TouchableOpacity style={styles.signinButton}
-              onPress={()=>updateAccept(element.key,'Accepted',element.IDnumber,
-              element.faculty,element.monthNum,element.UniversityName,element.name,
-              element.surname)} >
+              onPress={()=>updateAccept(element.key,'Accepted',element.Avalability,
+              element.Gender,element.Price,element.StartDate,element.name,
+              element.location,element.email)} >
                 <Text style={styles.signinButtonText}
                 
-                >Accept</Text>
+                >Request</Text>
             </TouchableOpacity>
                   </View>
                   </View>
@@ -218,7 +211,7 @@ const HomeScreen = ({navigation}) => {
             <Text style={{
                 fontSize: 18, marginLeft: 10,
                 marginTop: 18
-            }}>{ComName}</Text>
+            }}>{fullame}</Text>
         </View>
         {/* <TouchableOpacity onPress={navigation.navigate('Notification')}>
   <Ionicons name="notifications" size={24}/>
@@ -250,8 +243,7 @@ const HomeScreen = ({navigation}) => {
         <Picker
             selectedValue={StudentContainer}
             style={{ width: 300, height: 50, backgroundColor: '#eee' }}
-            onValueChange={(value, id) => { FilterFunction(value) }}
-        >
+            onValueChange={(value, id) => { FilterFunction(value) }}>
             <Picker.Item label="select" value="" />
             <Picker.Item label="Mathematics" value="Mathematics" />
             <Picker.Item label="Physical Sciences" value="PS" />
@@ -325,10 +317,10 @@ const styles = StyleSheet.create({
         // alignItems:'center'
     },
     signinButton:{
-        backgroundColor:'#4bb543',
-        borderRadius:8,
+        backgroundColor:'#fff',
+        borderWidth:1,
         marginHorizontal:20,
-        height:30,
+        height:40,
         justifyContent:'center',
         alignItems:'center',
         marginTop:20,
@@ -336,7 +328,7 @@ const styles = StyleSheet.create({
     signinButtonText:{
         fontSize:18,
         lineHeight:18 * 1.4,
-        color:'#fff',
+        color:'#000',
         
     },
     categoryBtn: {

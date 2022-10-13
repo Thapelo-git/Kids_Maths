@@ -207,7 +207,7 @@ const TutorProfile = ({navigation,route}) => {
             {/* <Text style={{color:'red',marginTop:-15}}>{props.touched.Price && props.errors.Price}</Text> */}
             </View>
         </ProgressStep>
-        <ProgressStep label="Comfirm" onSubmit={editprofile()}>
+        <ProgressStep label="Comfirm" onSubmit={()=>editprofile()}>
             <View style={{ alignItems: 'center' }}>
             <Text style={{marginVertical:10}}>Are u available for Public or Private</Text>
 
