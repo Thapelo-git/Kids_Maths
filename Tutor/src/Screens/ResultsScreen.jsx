@@ -12,7 +12,7 @@ import { auth,db } from './Firebase'
 import { Divider } from 'react-native-elements'
 const ResultsScreen = ({navigation}) => {
     const [filteredDataSource, setFilteredDataSource] = useState();
-    const [masterDataSource, setMasterDataSource] = useState([]);
+    const [Tutor, setTutor] = useState([]);
     const [Student, setStudent] = useState([])
     const user = auth.currentUser.uid;
     useEffect(() => {
@@ -23,25 +23,44 @@ const ResultsScreen = ({navigation}) => {
                 const key = action.key
                 const data = action.val()
                 Student.push({
-                    key:data.key,
+                    key:key,TutorKey:data.TutorKey,
                     Status:data.Status,fullname:data.fullname,Email:data.Email,PhoneNum:data.PhoneNum,
                     Avalability:data.Avalability,Gender:data.Gender,Price:data.Price,
                     StartDate:data.StartDate,Subject:data.Subject,Profile:data.Profile,
-                    name:data.name,location:data.location,email:data.email,
+                    name:data.name,location:data.location,email:data.email,user:data.user
                 })
-                setStudent(Student)
-                setFilteredDataSource(Student);
-                setMasterDataSource(Student);
+                
+                const text=user
+                if(text){
+                 const newData = Student.filter(function(item){
+                     const itemData = item.user ? item.user
+                     :'';
+                     const textData = text;
+                     return itemData.indexOf( textData)>-1;
+     
+                 })
+                 setStudent(newData)
+                
+               }
+               const CurrentUser=user
+               if(CurrentUser){
+                const newInfor = Student.filter(function(item){
+                    const itemData = item.TutorKey ? item.TutorKey
+                    :'';
+                    const textData = CurrentUser;
+                    return itemData.indexOf( textData)>-1;
+    
+                })
+                setTutor(newInfor)
                
+              }
 
             })
         })
     }, [])
     const Card = ({ element, index }) => {
         return (
-           <>
-           {
-            element.Profile == 'Student'?(
+           
                 <>
                 <View style={{ margin: 20,backgroundColor: '#fff',elevation: 3 }}>
            <View style={{width:'100%'}}>
@@ -119,31 +138,52 @@ const ResultsScreen = ({navigation}) => {
                   <Divider style={{width: 200, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
 
                   {/* description */}
-                  
-                  <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
-                  <TouchableOpacity style={styles.signinButton}
-            //   onPress={()=>updateAccept(element.key,'Accepted',element.Avalability,
-            //   element.Gender,element.Price,element.StartDate,element.name,
-            //   element.location,element.email)}
-               >
-                <Text style={styles.signinButtonText}
-                
-                >Request</Text>
-            </TouchableOpacity>
-                  </View>
+                  <Text>Your Status</Text>
+                  {
+                    element.Status =='Pending'?(
+                        <Text style={{color:'blue'}}>{element.Status}</Text>
+                    ):(
+                        
+                            element.Status =='Accepted'?(
+                                <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
+                                    <Text style={{color:'green'}}>{element.Status}</Text>
+                                    <Text>Please Rate Tutor after sessions</Text>
+                                <TouchableOpacity style={styles.signinButton}
+                          //   onPress={()=>updateAccept(element.key,'Accepted',element.Avalability,
+                          //   element.Gender,element.Price,element.StartDate,element.name,
+                          //   element.location,element.email)}
+                             >
+                              <Text style={styles.signinButtonText}
+                              
+                              >Rate</Text>
+                          </TouchableOpacity>
+                                </View>
+                            ):(<>
+                              <Text style={{color:'red'}}>{element.Status}</Text>
+                              </>)
+                        
+                    )
+                  }
+           
                   </View>
                 </>
-            ):(<></>)
-           }
-           <View style={{ margin: 20,backgroundColor: '#fff',elevation: 3 }}>
+           
+        )
+          
+    }
+    const NewCard = ({ element, index }) => {
+        return (
+           
+                <>
+                <View style={{ margin: 20,backgroundColor: '#fff',elevation: 3 }}>
            <View style={{width:'100%'}}>
                       <View style={{ backgroundColor: 'gray', justifyContent: 'flex-start', flexDirection: 'row', padding: 8, alignItems:'center', borderBottomRightRadius:10}}>
                        
                         <Text style={{color: '#fff'}}>
-                          Student Number:
+                          Location
                         </Text>
                         <Text style={{color: '#fff'}}>
-                          {" "}{element.IDnumber}
+                          {" "}{element.location}
                         </Text>
                       </View>
                     </View>
@@ -153,15 +193,15 @@ const ResultsScreen = ({navigation}) => {
                     {/* event type */}
                     <View style={{flexDirection:'row',}}>
                     <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8, alignItems:'center'}}>
-                      <Ionicons name="documents" color='#333' size={20} />
+                      {/* <Ionicons name="documents" color='#333' size={20} /> */}
                       <Text style={{paddingHorizontal: 5,color:'#333'}}>
-                       faculty of : {element.faculty} 
+                       
                       </Text>
                     </View>
                     <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8, alignItems:'center'}}>
                     
                       <Text style={{paddingHorizontal: 5,color:'#333'}}>
-                       Duration : {element.monthNum}  month
+                       {element.Avalability}  Tutor
                       </Text>
                     </View>
                     </View>
@@ -174,9 +214,9 @@ const ResultsScreen = ({navigation}) => {
                         style={{ paddingHorizontal: 5 }}
                         color='blue'
                       /> */}
-                      <Text>University Name:</Text>
+                      <Text>R:</Text>
                       <Text style={{color:'blue', fontSize:12}}>
-                        {element.UniversityName} 
+                        {element.Price} per {element.StartDate}
                       </Text>
                     </View>
 
@@ -188,21 +228,21 @@ const ResultsScreen = ({navigation}) => {
                     <View>
                     <Text>Name: </Text>
                     <Text style={{color:'#333'}}>
-                      {element.name}
+                      {element.fullname}
                     </Text>
                     </View>
                     <View>
-                    <Text>Surname: </Text>
+                    <Text>Gender: </Text>
                     <Text style={{color:'#333'}}>
-                      {element.surname}
+                      {element.Gender}
                     </Text>
                     </View>
                   </View>
                   <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
                     <View>
-                    <Text>modules Completed: </Text>
+                    <Text>Specialist of: </Text>
                     <Text style={{color:'#333'}}>
-                      {element.completed}
+                      {element.Subject}
                     </Text>
                     </View>
                     
@@ -211,14 +251,57 @@ const ResultsScreen = ({navigation}) => {
                   <Divider style={{width: 200, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
 
                   {/* description */}
-                  <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
-                  <TouchableOpacity style={styles.signinButton}
-               onPress={()=>navigation.navigate('LogScreen',{name:element.name,StudentNum:element.IDnumber})}>
-                <Text style={styles.signinButtonText}>Start Logbook</Text>
-            </TouchableOpacity>
+                  <Text>Your Status</Text>
+                  {
+                    element.Status =='Pending'?(
+                        <View style={{justifyContent:'center',flexDirection:'row',marginVertical:10,}}>
+                        <TouchableOpacity style={{borderWidth:2,
+                            backgroundColor:'#fff',marginHorizontal:10,
+                            borderColor:'green',width:70,height:40,
+                            justifyContent:'center',alignItems:'center'
+                          }} 
+                        // onPress={()=>navigation.navigate('SignIn')}
+                        >
+                        <Text style={{color:'green'}}>Accept</Text>
+                        </TouchableOpacity >
+                        <TouchableOpacity style={ { borderWidth:2,
+                            backgroundColor:'#fff',marginHorizontal:10,
+                            borderColor:'red',width:70,height:40,
+                            justifyContent:'center',alignItems:'center'
+                          }}  
+                        // onPress={()=>navigation.navigate('SignUp')}
+                        >
+                        <Text style={{color:'red'}}>Reject</Text>   
+                        </TouchableOpacity>
+                         </View>
+                    ):(
+                        
+                            element.Status =='Accepted'?(
+                                <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
+                                    <Text style={{color:'green'}}>{element.Status}</Text>
+                                    <Text>Please Rate Tutor after sessions</Text>
+                                <TouchableOpacity style={styles.signinButton}
+                          //   onPress={()=>updateAccept(element.key,'Accepted',element.Avalability,
+                          //   element.Gender,element.Price,element.StartDate,element.name,
+                          //   element.location,element.email)}
+                             >
+                              <Text style={styles.signinButtonText}
+                              
+                              >Rate</Text>
+                          </TouchableOpacity>
+                                </View>
+                            ):(<>
+                              <Text style={{color:'red'}}>{element.Status}</Text>
+                              </>)
+                        
+                    )
+                  }
+           
                   </View>
-                  </View>
-           </>)
+                </>
+           
+        )
+          
     }
   return (
     <View>
@@ -233,6 +316,14 @@ const ResultsScreen = ({navigation}) => {
                     contentContainerStyle={{ paddingLeft: 20 }}
                     data={Student}
                     renderItem={({ item, index }) => <Card element={item} index={index} />}
+                />
+                     <FlatList
+                    keyExtractor={(_, key) => key.toString()}
+                   
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingLeft: 20 }}
+                    data={Tutor}
+                    renderItem={({ item, index }) => <NewCard element={item} index={index} />}
                 />
     </View>
   )
