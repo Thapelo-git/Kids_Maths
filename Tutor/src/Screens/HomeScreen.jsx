@@ -13,7 +13,7 @@ import ModelSearch from './ModelSearch';
 const { width } = Dimensions.get("screen")
 const cardWidth = width / 1.8
 const HomeScreen = ({navigation}) => {
-    const [fullame, setName] = useState('')
+    const [CurrentName, setName] = useState('')
     const [Email, setEmail] = useState('')
     const [PhoneNum, setPhonenumber] = useState('')
     const [filteredDataSource, setFilteredDataSource] = useState();
@@ -31,10 +31,10 @@ const HomeScreen = ({navigation}) => {
                 Student.push({
                     key: key,
                     Avalability: data.Avalability,
-                    fullname: data.fullname,location:data.location,
-                    Description: data.Description, Gender: data.Gender,
-                    Email: data.email, faculty: data.faculty,StartDate:data.StartDate,
-                    Subject: data.Subject,Price:data.Price
+                    fullname:data.fullname,location:data.location,
+                    Description:data.Description, Gender:data.Gender,
+                    email:data.email,StartDate:data.StartDate,
+                    Subject:data.Subject,Price:data.Price
                 })
                 const text='Available'
                 if(text){
@@ -81,12 +81,12 @@ const HomeScreen = ({navigation}) => {
             setStudentContainer(text)
         }
     }
-    const updateAccept = (key,Avalability,Gender,Price,StartDate,Subject,name,location,email) => {
+    const updateAccept = (key,Avalability,Gender,Price,StartDate,Subject,fullname,location,email) => {
      
         db.ref('RequestTutor').push({
-            Status:'Pending',fullame,Email,PhoneNum,
+            Status:'Pending',fullname,Email,PhoneNum,user,
             key,Avalability,Gender,Price,StartDate,Subject,
-            name,location,email,
+            CurrentName,location,Profile:'Student'
           })
   
     }
@@ -172,9 +172,9 @@ const HomeScreen = ({navigation}) => {
                   {/* description */}
                   <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
                   <TouchableOpacity style={styles.signinButton}
-              onPress={()=>updateAccept(element.key,'Accepted',element.Avalability,
-              element.Gender,element.Price,element.StartDate,element.name,
-              element.location,element.email)} >
+              onPress={()=>updateAccept(element.key,element.Avalability,
+              element.Gender,element.Price,element.StartDate,element.Subject,element.fullname,
+              element.location,)} >
                 <Text style={styles.signinButtonText}
                 
                 >Request</Text>
@@ -211,7 +211,7 @@ const HomeScreen = ({navigation}) => {
             <Text style={{
                 fontSize: 18, marginLeft: 10,
                 marginTop: 18
-            }}>{fullame}</Text>
+            }}>{CurrentName}</Text>
         </View>
         {/* <TouchableOpacity onPress={navigation.navigate('Notification')}>
   <Ionicons name="notifications" size={24}/>
