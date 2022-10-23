@@ -5,10 +5,10 @@ TouchableOpacity,Image,Dimensions,Alert} from 'react-native'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Feather from "react-native-vector-icons/Feather"
 import { Formik } from 'formik'
-import * as yup from 'yup'
+import * as yup from 'yup' 
 import { auth,db } from './Firebase'
 import { ScrollView } from 'react-native-gesture-handler'
-
+//StudentProfile
 const deviceHeight=Dimensions.get("window").height
 const deviceWidth=Dimensions.get("window").width
 const SignUp = ({navigation}) => {

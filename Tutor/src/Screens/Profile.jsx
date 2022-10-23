@@ -36,7 +36,10 @@ const Profile = ({navigation}) => {
         <View style={{justifyContent:'center',alignItems:'center',marginVertical:60,width:'100%'}}>
     <TouchableOpacity style={{borderWidth:2,
         backgroundColor:'#fff',marginVertical:30, borderColor:'#000',width:200,height:70,
-        justifyContent:'center',alignItems:'center',flexDirection:'row'}} onPress={()=>navigation.navigate('SignIn')}>
+        justifyContent:'center',alignItems:'center',flexDirection:'row'}} 
+        onPress={()=>navigation.navigate('StudentProfile',{
+            email:email,name:name,phonenumber:phonenumber,uid:Uid
+      })}>
     <Text style={{color:'#000'}}>Student </Text>
     <Feather name="arrow-right" size={24} />
     </TouchableOpacity >
@@ -50,7 +53,7 @@ const Profile = ({navigation}) => {
     <Text style={{color:'#000'}}>Tutor</Text> 
     <Feather name="arrow-right" size={24} />  
     </TouchableOpacity>
-    <TouchableOpacity onPress={onSignout} style={{backgroundColor:'red', width:140, marginTop: 50, borderRadius:5, padding:5}}>
+    <TouchableOpacity  onPress={()=>navigation.navigate('SignIn')} style={{backgroundColor:'red', width:140, marginTop: 50, borderRadius:5, padding:5}}>
 
 <View style={{flexDirection: 'row', justifyContent:'center'}}>
 <Icon

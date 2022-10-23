@@ -16,6 +16,7 @@ import Profile from './src/Screens/Profile';
 import TutorProfile from './src/Screens/TutorProfile';
 import RatingScreen from './src/Screens/RatingScreen';
 import ViewRating from './src/Screens/ViewRating';
+import StudentProfile from './src/Screens/StudentProfile';
 
 
 const Stack = createNativeStackNavigator()
@@ -43,6 +44,7 @@ export default function App() {
       <Stack.Screen name="HomeScreen" component={TabScreen} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="TutorProfile" component={TutorProfile} />
+      <Stack.Screen name="StudentProfile" component={StudentProfile} />
       <Stack.Screen name="RatingScreen" component={RatingScreen} />
       <Stack.Screen name="ViewRating" component={ViewRating} />
       </Stack.Navigator>

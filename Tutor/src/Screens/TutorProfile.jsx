@@ -97,7 +97,7 @@ const TutorProfile = ({navigation,route}) => {
                     keyboardType='email-address'
                     onChangeText={(text)=>setEmail(text)}
              value={email}
-            //  onBlur={props.handleBlur('email')}
+            
                     />
                 </View>
             </View>
@@ -114,7 +114,7 @@ const TutorProfile = ({navigation,route}) => {
                     keyboardType='numeric'
                     onChangeText={(text)=>setphonenumber(text)}
              value={phonenumber}
-            //  onBlur={props.handleBlur('phonenumber')}
+         
                     />
                 </View>
             </View>
