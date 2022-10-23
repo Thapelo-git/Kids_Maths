@@ -15,6 +15,7 @@ import TabScreen from './src/Screens/TabScreen';
 import Profile from './src/Screens/Profile';
 import TutorProfile from './src/Screens/TutorProfile';
 import RatingScreen from './src/Screens/RatingScreen';
+import ViewRating from './src/Screens/ViewRating';
 
 
 const Stack = createNativeStackNavigator()
@@ -43,6 +44,7 @@ export default function App() {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="TutorProfile" component={TutorProfile} />
       <Stack.Screen name="RatingScreen" component={RatingScreen} />
+      <Stack.Screen name="ViewRating" component={ViewRating} />
       </Stack.Navigator>
     </NavigationContainer>
   );

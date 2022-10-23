@@ -27,7 +27,8 @@ const ResultsScreen = ({navigation}) => {
                     Status:data.Status,fullname:data.fullname,Email:data.Email,PhoneNum:data.PhoneNum,
                     Avalability:data.Avalability,Gender:data.Gender,Price:data.Price,
                     StartDate:data.StartDate,Subject:data.Subject,Profile:data.Profile,
-                    name:data.name,location:data.location,email:data.email,user:data.user,CurrentName:data.CurrentName
+                    name:data.name,location:data.location,email:data.email,user:data.user,CurrentName:data.CurrentName,
+                    Comment:data.Comment,Ratingnumber:data.Ratingnumber,
                 })
                 
                 const text=user
@@ -149,7 +150,7 @@ const ResultsScreen = ({navigation}) => {
                                     <Text style={{color:'green'}}>{element.Status}</Text>
                                     <Text>Please Rate Tutor after sessions</Text>
                                 <TouchableOpacity style={styles.signinButton}
-                                onPress={()=>navigation.navigate('RatingScreen')}
+                                onPress={()=>navigation.navigate('RatingScreen',{key:element.key})}
                           
                              >
                               <Text style={styles.signinButtonText}
@@ -253,7 +254,7 @@ const ResultsScreen = ({navigation}) => {
                             borderColor:'red',width:70,height:40,
                             justifyContent:'center',alignItems:'center'
                           }}  
-                          onPress={()=>updateAccept(element.key,'Reject')}
+                          onPress={()=>updateAccept(element.key,'Rejected')}
                         >
                         <Text style={{color:'red'}}>Reject</Text>   
                         </TouchableOpacity>
@@ -265,7 +266,8 @@ const ResultsScreen = ({navigation}) => {
                                     <Text style={{color:'green'}}>{element.Status}</Text>
                                     <Text>View Your Student Rating</Text>
                                 <TouchableOpacity style={styles.signinButton}
-        
+                              onPress={()=>navigation.navigate('ViewRating',{Comment:element.Comment,
+                              Ratingnumber:element.Ratingnumber})}
                              >
                               <Text style={styles.signinButtonText}
                               
