@@ -27,7 +27,7 @@ const ResultsScreen = ({navigation}) => {
                     Status:data.Status,fullname:data.fullname,Email:data.Email,PhoneNum:data.PhoneNum,
                     Avalability:data.Avalability,Gender:data.Gender,Price:data.Price,
                     StartDate:data.StartDate,Subject:data.Subject,Profile:data.Profile,
-                    name:data.name,location:data.location,email:data.email,user:data.user
+                    name:data.name,location:data.location,email:data.email,user:data.user,CurrentName:data.CurrentName
                 })
                 
                 const text=user
@@ -149,9 +149,8 @@ const ResultsScreen = ({navigation}) => {
                                     <Text style={{color:'green'}}>{element.Status}</Text>
                                     <Text>Please Rate Tutor after sessions</Text>
                                 <TouchableOpacity style={styles.signinButton}
-                          //   onPress={()=>updateAccept(element.key,'Accepted',element.Avalability,
-                          //   element.Gender,element.Price,element.StartDate,element.name,
-                          //   element.location,element.email)}
+                                onPress={()=>navigation.navigate('RatingScreen')}
+                          
                              >
                               <Text style={styles.signinButtonText}
                               
@@ -171,6 +170,17 @@ const ResultsScreen = ({navigation}) => {
         )
           
     }
+    const updateAccept = (key,status) => {
+      db.ref('RequestTutor').child(key).update({Status:status})
+        .then(()=>db.ref('RequestTutor').once('value'))
+        .then(snapshot=>snapshot.val())
+        .catch(error => ({
+          errorCode: error.code,
+          errorMessage: error.message
+        }));
+   
+
+  }
     const NewCard = ({ element, index }) => {
         return (
            
@@ -201,7 +211,7 @@ const ResultsScreen = ({navigation}) => {
                     <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8, alignItems:'center'}}>
                     
                       <Text style={{paddingHorizontal: 5,color:'#333'}}>
-                       {element.Avalability}  Tutor
+                     name of student:  {element.CurrentName}
                       </Text>
                     </View>
                     </View>
@@ -214,44 +224,18 @@ const ResultsScreen = ({navigation}) => {
                         style={{ paddingHorizontal: 5 }}
                         color='blue'
                       /> */}
-                      <Text>R:</Text>
+                      <Text>Student Email: </Text>
                       <Text style={{color:'blue', fontSize:12}}>
-                        {element.Price} per {element.StartDate}
+                        {element.Email} 
                       </Text>
                     </View>
 
                     <Divider style={{width: 170, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
 
                   {/* location */}
-                  <View style={{flexDirection:'row'}}>
-                  <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
-                    <View>
-                    <Text>Name: </Text>
-                    <Text style={{color:'#333'}}>
-                      {element.fullname}
-                    </Text>
-                    </View>
-                    <View>
-                    <Text>Gender: </Text>
-                    <Text style={{color:'#333'}}>
-                      {element.Gender}
-                    </Text>
-                    </View>
-                  </View>
-                  <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
-                    <View>
-                    <Text>Specialist of: </Text>
-                    <Text style={{color:'#333'}}>
-                      {element.Subject}
-                    </Text>
-                    </View>
-                    
-                  </View>
-                  </View>
-                  <Divider style={{width: 200, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
-
+ 
                   {/* description */}
-                  <Text>Your Status</Text>
+                 
                   {
                     element.Status =='Pending'?(
                         <View style={{justifyContent:'center',flexDirection:'row',marginVertical:10,}}>
@@ -260,7 +244,7 @@ const ResultsScreen = ({navigation}) => {
                             borderColor:'green',width:70,height:40,
                             justifyContent:'center',alignItems:'center'
                           }} 
-                        // onPress={()=>navigation.navigate('SignIn')}
+                          onPress={()=>updateAccept(element.key,'Accepted')}
                         >
                         <Text style={{color:'green'}}>Accept</Text>
                         </TouchableOpacity >
@@ -269,7 +253,7 @@ const ResultsScreen = ({navigation}) => {
                             borderColor:'red',width:70,height:40,
                             justifyContent:'center',alignItems:'center'
                           }}  
-                        // onPress={()=>navigation.navigate('SignUp')}
+                          onPress={()=>updateAccept(element.key,'Reject')}
                         >
                         <Text style={{color:'red'}}>Reject</Text>   
                         </TouchableOpacity>
@@ -279,15 +263,13 @@ const ResultsScreen = ({navigation}) => {
                             element.Status =='Accepted'?(
                                 <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
                                     <Text style={{color:'green'}}>{element.Status}</Text>
-                                    <Text>Please Rate Tutor after sessions</Text>
+                                    <Text>View Your Student Rating</Text>
                                 <TouchableOpacity style={styles.signinButton}
-                          //   onPress={()=>updateAccept(element.key,'Accepted',element.Avalability,
-                          //   element.Gender,element.Price,element.StartDate,element.name,
-                          //   element.location,element.email)}
+        
                              >
                               <Text style={styles.signinButtonText}
                               
-                              >Rate</Text>
+                              >View</Text>
                           </TouchableOpacity>
                                 </View>
                             ):(<>
