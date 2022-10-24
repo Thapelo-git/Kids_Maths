@@ -45,8 +45,8 @@ const AdminView = ({navigation,route}) => {
 
     }, [])
     const updateComment = () => {
-        db.ref('RequestTutor').child(Key).update({Description:Description})
-          .then(()=>db.ref('RequestTutor').once('value'))
+        db.ref('TutorUsers').child(Key).update({Description:'Unavailable'})
+          .then(()=>db.ref('TutorUsers').once('value'))
           .then(snapshot=>snapshot.val())
           .catch(error => ({
             errorCode: error.code,

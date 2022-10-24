@@ -42,9 +42,9 @@ const AdminHome = ({navigation}) => {
                      return itemData.indexOf( textData)>-1;
      
                  })
-                 setStudent(newData)
-                 setFilteredDataSource(newData);
-                 setMasterDataSource(newData);
+                 setStudent(Student)
+                 setFilteredDataSource(Student);
+                 setMasterDataSource(Student);
                }
                  
                
