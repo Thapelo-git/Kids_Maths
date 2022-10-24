@@ -268,6 +268,19 @@ const AdminHome = ({navigation}) => {
     }
   return (
     <View>
+       <View style={styles.headerContainer}
+        >
+          <View style={{
+            backgroundColor: 'white',
+            opacity: 0.7, width: 30,
+            height: 30, justifyContent: 'center', alignItems: 'center',
+            borderRadius: 10,
+          }}>
+            <Feather name="arrow-left" size={30} color='black'
+              onPress={() => navigation.goBack()} />
+          </View>
+          <Text style={styles.headerTitle}></Text>
+        </View>
         <View style={{alignItems:'center'}}>
             <Text style={{fontWeight:'bold',color:'blue'}}>Active Tutors</Text>
             </View>
@@ -311,5 +324,12 @@ const styles = StyleSheet.create({
         lineHeight:18 * 1.4,
         color:'#000',
         
+    },
+    headerContainer: {
+      top: 10,
+      flexDirection: 'row', justifyContent: 'space-between',
+      alignContent: 'center'
+  
+  
     },
 })
