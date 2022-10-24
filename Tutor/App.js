@@ -17,6 +17,9 @@ import TutorProfile from './src/Screens/TutorProfile';
 import RatingScreen from './src/Screens/RatingScreen';
 import ViewRating from './src/Screens/ViewRating';
 import StudentProfile from './src/Screens/StudentProfile';
+import Adminlogin from './src/Screens/Adminlogin';
+import AdminHome from './src/Screens/AdminHome';
+import AdminView from './src/Screens/AdminView';
 
 
 const Stack = createNativeStackNavigator()
@@ -47,6 +50,9 @@ export default function App() {
       <Stack.Screen name="StudentProfile" component={StudentProfile} />
       <Stack.Screen name="RatingScreen" component={RatingScreen} />
       <Stack.Screen name="ViewRating" component={ViewRating} />
+      <Stack.Screen name="Adminlogin" component={Adminlogin} />
+      <Stack.Screen name="AdminHome" component={AdminHome} />
+      <Stack.Screen name="AdminView" component={AdminView} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -3,6 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import Feather from 'react-native-vector-icons/Feather'
 import { Rating, AirbnbRating } from 'react-native-ratings';
+//AdminView
 const ViewRating = ({navigation,route}) => {
     const [Comment,setComment]=useState(route.params.Comment)
     const [Ratingnumber,setRatingnumber]=useState(route.params.Ratingnumber)

@@ -13,7 +13,7 @@ import AsyncStorageLib from '@react-native-async-storage/async-storage'
 
 const deviceHeight=Dimensions.get("window").height
 const deviceWidth=Dimensions.get("window").width
-const SignIn = ({props}) => {
+const Adminlogin = ({props}) => {
     const navigation =useNavigation()
     const [Idnumber,setIdnumber]=useState([])
     const [isPasswordShow,setPasswordShow]=useState(false)
@@ -36,7 +36,7 @@ const SignIn = ({props}) => {
                             await AsyncStorageLib.setItem("TutorUsers", res.user.uid)
                           
         
-                            navigation.navigate('HomeScreen')
+                            navigation.navigate('AdminHome')
                         } catch (e) {
                             console.log("no data ");
                         }
@@ -51,10 +51,10 @@ const SignIn = ({props}) => {
    
   return (
 <SafeAreaView style={{backgroundColor:'#fff',width:'100%',height:'100%'}}>
-            <TouchableOpacity style={{width:'100%',display:'flex',justifyContent:'flex-start',marginVertical:30}}
-            onPress={()=>navigation.navigate('Adminlogin')}>
-            <Image style={styles.image} source={require('../Images/tutor4.jpg')}/>
-            </TouchableOpacity>
+            <View style={{width:'100%',display:'flex',justifyContent:"center",marginVertical:30,alignItems:'center'}}>
+            {/* <Image style={styles.image} source={require('../Images/tutor4.jpg')}/> */}
+            <Text style={{fontWeight:'bold',fontSize:30}}>Admin</Text>
+            </View>
             <View style={{width:'100%',padding:20,}}>
             
               <ScrollView>
@@ -135,9 +135,9 @@ const SignIn = ({props}) => {
             )}
             </Formik>
             <View style={{width:'100%',justifyContent:'center',flexDirection:'row',marginVertical:30}}>
-            <Text>Dont have account?</Text>
-            <TouchableOpacity onPress={()=>navigation.navigate('SignUp')}>
-                <Text style={{color:'blue',marginHorizontal:20}}>Sign Up</Text>
+            <Text>Want to go back?</Text>
+            <TouchableOpacity onPress={()=>navigation.navigate('SignIn')}>
+                <Text style={{color:'blue',marginHorizontal:20}}>Sign In</Text>
             </TouchableOpacity>
             </View>
             </ScrollView>
@@ -149,7 +149,7 @@ const SignIn = ({props}) => {
   )
 }
 
-export default SignIn
+export default Adminlogin
 
 const styles = StyleSheet.create({
     container:{
