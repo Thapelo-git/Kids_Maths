@@ -13,7 +13,7 @@ const AdminHome = ({navigation}) => {
     const [CurrentName, setName] = useState('')
     const [Email, setEmail] = useState('')
     const [PhoneNum, setPhonenumber] = useState('')
-    const [filteredDataSource, setFilteredDataSource] = useState();
+    const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [Student, setStudent] = useState([])
 
@@ -42,12 +42,23 @@ const AdminHome = ({navigation}) => {
                      return itemData.indexOf( textData)>-1;
      
                  })
-                 setStudent(Student)
-                 setFilteredDataSource(Student);
-                 setMasterDataSource(Student);
+                 setStudent(newData)
+                 
                }
                  
-               
+               const deactive='Unavailable'
+               if(deactive){
+                const newInfor = Student.filter(function(item){
+                    const itemData = item.Description ? item.Description
+                    :'';
+                    const textData = deactive;
+                    return itemData.indexOf( textData)>-1;
+    
+                })
+                
+                setFilteredDataSource(newInfor);
+             
+              } 
                
 
             })
@@ -154,15 +165,130 @@ const AdminHome = ({navigation}) => {
                   </View>
            </>)
     }
+    const updateAvailability = () => {
+        db.ref('TutorUsers').child(Key).update({Description:'Available'})
+          .then(()=>db.ref('TutorUsers').once('value'))
+          .then(snapshot=>snapshot.val())
+          .catch(error => ({
+            errorCode: error.code,
+            errorMessage: error.message
+          }));
+     
+  
+    }
+    const NewCard = ({ element, index }) => {
+        return (
+           <>
+           <View style={{ margin: 20,backgroundColor: '#fff',elevation: 3 }}>
+           <View style={{width:'100%'}}>
+                      <View style={{ backgroundColor: 'gray', justifyContent: 'flex-start', flexDirection: 'row', padding: 8, alignItems:'center', borderBottomRightRadius:10}}>
+                       
+                        <Text style={{color: '#fff'}}>
+                          Location
+                        </Text>
+                        <Text style={{color: '#fff'}}>
+                          {" "}{element.location}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <Divider style={{width: 90, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
+
+                    {/* event type */}
+                    <View style={{flexDirection:'row',}}>
+                    <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8, alignItems:'center'}}>
+                      {/* <Ionicons name="documents" color='#333' size={20} /> */}
+                      <Text style={{paddingHorizontal: 5,color:'#333'}}>
+                       
+                      </Text>
+                    </View>
+                    <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8, alignItems:'center'}}>
+                    
+                      <Text style={{paddingHorizontal: 5,color:'#333'}}>
+                       {element.Avalability}  Tutor
+                      </Text>
+                    </View>
+                    </View>
+                    <Divider style={{width: 120, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
+
+                    {/* date */}
+                    <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8, alignItems:'center' }}>
+                      {/* <Feather
+                        name="calendar" size={20}
+                        style={{ paddingHorizontal: 5 }}
+                        color='blue'
+                      /> */}
+                      <Text>R:</Text>
+                      <Text style={{color:'blue', fontSize:12}}>
+                        {element.Price} per {element.StartDate}
+                      </Text>
+                    </View>
+
+                    <Divider style={{width: 170, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
+
+                  {/* location */}
+                  <View style={{flexDirection:'row'}}>
+                  <View style={{ backgroundColor: '#fff', justifyContent: 'flex-end', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
+                    <View>
+                    <Text>Name: </Text>
+                    <Text style={{color:'#333'}}>
+                      {element.fullname}
+                    </Text>
+                    </View>
+                    <View>
+                    <Text>Gender: </Text>
+                    <Text style={{color:'#333'}}>
+                      {element.Gender}
+                    </Text>
+                    </View>
+                  </View>
+                  <View style={{ backgroundColor: '#fff', justifyContent:'flex-start', flexDirection: 'row', padding: 8 , alignItems:'center'}}>
+                    <View>
+                    <Text>Specialist of: </Text>
+                    <Text style={{color:'#333'}}>
+                      {element.Subject}
+                    </Text>
+                    </View>
+                    
+                  </View>
+                  </View>
+                  <Divider style={{width: 200, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
+
+                  {/* description */}
+                  <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
+                  <TouchableOpacity style={styles.signinButton}
+              onPress={()=>updateAvailability()} >
+                <Text style={styles.signinButtonText}
+                
+                >Add to list</Text>
+            </TouchableOpacity>
+                  </View>
+                  </View>
+           </>)
+    }
   return (
     <View>
+        <View style={{alignItems:'center'}}>
+            <Text style={{fontWeight:'bold',color:'blue'}}>Active Tutors</Text>
+            </View>
       <FlatList
             keyExtractor={(_, key) => key.toString()}
-        //    horizontal
+           horizontal
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingLeft: 20 }}
             data={Student}
             renderItem={({ item, index }) => <Card element={item} index={index} />}
+        />
+        <View style={{alignItems:'center'}}>
+            <Text style={{fontWeight:'bold',color:'blue'}}>Deactivated Tutors</Text>
+            </View>
+      <FlatList
+            keyExtractor={(_, key) => key.toString()}
+           horizontal
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingLeft: 20 }}
+            data={filteredDataSource}
+            renderItem={({ item, index }) => <NewCard element={item} index={index} />}
         />
     </View>
   )
