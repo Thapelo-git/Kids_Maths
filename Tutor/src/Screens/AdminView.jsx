@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View ,TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View ,TouchableOpacity,} from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import { db,auth } from './Firebase';
 import Feather from 'react-native-vector-icons/Feather'
 import { Rating, AirbnbRating } from 'react-native-ratings';
+import { ScrollView } from 'react-native-gesture-handler';
 //AdminView
 const AdminView = ({navigation,route}) => {
     const [Key,setKey]=useState(route.params.Key)
@@ -70,8 +71,19 @@ const AdminView = ({navigation,route}) => {
           </View>
           <Text style={styles.headerTitle}></Text>
         </View>
+        <View style={{alignItems:'center',padding:15}}>
+    <Text>Remove From Tutor List</Text>
+  <TouchableOpacity style={styles.signinButton}
+                                 onPress={()=>updateComment()}
+                          
+                             >
+                              <Text style={styles.signinButtonText}>Remove</Text>
+                          </TouchableOpacity>
+                          </View>
+                          <View>
         {
-            Tutor.map((element)=>{return(<>
+            Tutor.map((element)=>{return(
+            <View><ScrollView style={{padding:20}}>
             <View style={{alignItems:'center'}}>
             <Text style={{fontWeight:'bold',color:'blue'}}>Ratings from {element.CurrentName}</Text>
             </View>
@@ -85,18 +97,11 @@ const AdminView = ({navigation,route}) => {
 />
                 <Text>Comments</Text>
                 <Text>{element.Comment}</Text>
-                </>
+                </ScrollView></View>
             )})
         }
-  <View style={{alignItems:'center',padding:15}}>
-    <Text>Remove From Tutor List</Text>
-  <TouchableOpacity style={styles.signinButton}
-                                 onPress={()=>updateComment()}
-                          
-                             >
-                              <Text style={styles.signinButtonText}>Remove</Text>
-                          </TouchableOpacity>
-                          </View>
+        </View>
+  
     </View>
   )
 }

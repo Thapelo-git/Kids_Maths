@@ -170,16 +170,19 @@ const HomeScreen = ({navigation}) => {
                   <Divider style={{width: 200, justifyContent:'flex-end', alignItems:'flex-end', alignSelf:'flex-end'}}/>
 
                   {/* description */}
-                  <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
-                  <TouchableOpacity style={styles.signinButton}
-              onPress={()=>updateAccept(element.key,element.Avalability,
-              element.Gender,element.Price,element.StartDate,element.Subject,element.fullname,
-              element.location,)} >
-                <Text style={styles.signinButtonText}
+                  {
+                    element.key === user?(<></>):(<>  <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
+                    <TouchableOpacity style={styles.signinButton}
+                onPress={()=>updateAccept(element.key,element.Avalability,
+                element.Gender,element.Price,element.StartDate,element.Subject,element.fullname,
+                element.location,)} >
+                  <Text style={styles.signinButtonText}
+                  
+                  >Request</Text>
+              </TouchableOpacity>
+                    </View></>)
+                  }
                 
-                >Request</Text>
-            </TouchableOpacity>
-                  </View>
                   </View>
            </>)
     }

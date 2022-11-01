@@ -165,7 +165,7 @@ const AdminHome = ({navigation}) => {
                   </View>
            </>)
     }
-    const updateAvailability = () => {
+    const updateAvailability = (Key) => {
         db.ref('TutorUsers').child(Key).update({Description:'Available'})
           .then(()=>db.ref('TutorUsers').once('value'))
           .then(snapshot=>snapshot.val())
@@ -257,7 +257,7 @@ const AdminHome = ({navigation}) => {
                   {/* description */}
                   <View style={{ justifyContent: 'center',  padding: 8,marginHorizontal:10 }}>
                   <TouchableOpacity style={styles.signinButton}
-              onPress={()=>updateAvailability()} >
+              onPress={()=>updateAvailability(element.key)} >
                 <Text style={styles.signinButtonText}
                 
                 >Add to list</Text>
@@ -276,10 +276,23 @@ const AdminHome = ({navigation}) => {
             height: 30, justifyContent: 'center', alignItems: 'center',
             borderRadius: 10,
           }}>
+            {/* <Feather name="arrow-left" size={30} color='black'
+              onPress={() => navigation.goBack()} /> */}
+          </View>
+          <Text style={styles.headerTitle}></Text>
+        </View>
+        <View style={styles.headerContainer}
+        >
+          <View style={{
+            backgroundColor: 'white',
+            opacity: 0.7, width: 30,
+            height: 30, justifyContent: 'center', alignItems: 'center',
+            borderRadius: 10,
+          }}>
             <Feather name="arrow-left" size={30} color='black'
               onPress={() => navigation.goBack()} />
           </View>
-          <Text style={styles.headerTitle}></Text>
+          <Text style={styles.headerTitle}>Logout</Text>
         </View>
         <View style={{alignItems:'center'}}>
             <Text style={{fontWeight:'bold',color:'blue'}}>Active Tutors</Text>
@@ -325,11 +338,19 @@ const styles = StyleSheet.create({
         color:'#000',
         
     },
+    // headerContainer: {
+    //   top: 10,
+    //   flexDirection: 'row', justifyContent: 'space-between',
+    //   alignContent: 'center'
+  
+  
+    // },
     headerContainer: {
-      top: 10,
-      flexDirection: 'row', justifyContent: 'space-between',
-      alignContent: 'center'
-  
-  
-    },
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 20,
+      paddingHorizontal: 20
+  },
+   
 })
